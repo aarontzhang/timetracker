@@ -58,8 +58,11 @@ function TimeBlock({ hour, activity, isSelected, onPointerDown, onPointerEnter, 
       className={`time-block ${isSelected ? 'selected' : ''} ${categories.length > 0 ? 'has-activity' : ''}`}
       onPointerDown={onPointerDown}
       onPointerEnter={onPointerEnter}
-      style={backgroundColor ? { borderLeftColor: backgroundColor } : {}}
     >
+      <div
+        className="time-block-indicator"
+        style={backgroundColor ? { backgroundColor } : {}}
+      />
       <span className="time-label">{formatHour(hour)}</span>
       {categories.length > 0 && (
         <div className="activity-info">

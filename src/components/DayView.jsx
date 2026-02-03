@@ -9,7 +9,7 @@ function DayView({ dayData, onBlockClick, isToday, categoryFrequencies }) {
   const [dragStart, setDragStart] = useState(null);
   const [dragEnd, setDragEnd] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
-  // Block height: 52px height + 2px margin-bottom = 54px total per block
+  // Block height: 54px with no margin
   const blockHeight = 54;
 
   // Update current time every minute

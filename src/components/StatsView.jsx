@@ -85,22 +85,32 @@ function StatsView({ data, currentDate }) {
     return `${h.toFixed(1)}h`;
   };
 
-  // Generate conic gradient for pie chart
+  // Generate conic gradient for pie chart with solid segments (no blending)
   const getPieStyle = () => {
     if (stats.totalTrackedHours === 0) return {};
+    if (stats.categoryStats.length === 0) return {};
 
-    let gradientStops = [];
+    // Single category: solid color
+    if (stats.categoryStats.length === 1) {
+      return { background: stats.categoryStats[0].color };
+    }
+
+    const stops = [];
     let currentAngle = 0;
 
     stats.categoryStats.forEach(stat => {
       const percentage = (stat.hours / stats.totalTrackedHours) * 100;
-      gradientStops.push(`${stat.color} ${currentAngle}%`);
-      currentAngle += percentage;
-      gradientStops.push(`${stat.color} ${currentAngle}%`);
+      const endAngle = currentAngle + percentage;
+
+      // Hard stops: same color at start and end of segment
+      stops.push(`${stat.color} ${currentAngle.toFixed(2)}%`);
+      stops.push(`${stat.color} ${endAngle.toFixed(2)}%`);
+
+      currentAngle = endAngle;
     });
 
     return {
-      background: `conic-gradient(${gradientStops.join(', ')})`
+      background: `conic-gradient(${stops.join(', ')})`
     };
   };
 
