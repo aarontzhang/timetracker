@@ -2,21 +2,21 @@
   <!-- Background circle -->
   <circle cx="256" cy="256" r="240" fill="#f7f4ef"/>
 
-  <!-- Pie segments - thinner ring -->
-  <!-- Sleep: 30% - dark forest -->
-  <path d="M256,256 L256,56 A200,200 0 0,1 451,330 Z" fill="#1b4d3e"/>
+  <!-- Pie segments - lighter greens and blues -->
+  <!-- Sleep: 30% - indigo -->
+  <path d="M256,256 L256,56 A200,200 0 0,1 451,330 Z" fill="#5c6bc0"/>
 
   <!-- Study: 25% - teal -->
-  <path d="M256,256 L451,330 A200,200 0 0,1 156,430 Z" fill="#3d9182"/>
+  <path d="M256,256 L451,330 A200,200 0 0,1 156,430 Z" fill="#4db6ac"/>
 
-  <!-- Social: 20% - dusty rose -->
-  <path d="M256,256 L156,430 A200,200 0 0,1 61,182 Z" fill="#b5838d"/>
+  <!-- Social: 20% - light blue -->
+  <path d="M256,256 L156,430 A200,200 0 0,1 61,182 Z" fill="#64b5f6"/>
 
-  <!-- Work: 15% - forest green -->
-  <path d="M256,256 L61,182 A200,200 0 0,1 156,82 Z" fill="#2e7d32"/>
+  <!-- Work: 15% - green -->
+  <path d="M256,256 L61,182 A200,200 0 0,1 156,82 Z" fill="#66bb6a"/>
 
-  <!-- Other: 10% - warm sand -->
-  <path d="M256,256 L156,82 A200,200 0 0,1 256,56 Z" fill="#c9a66b"/>
+  <!-- Other: 10% - cyan -->
+  <path d="M256,256 L156,82 A200,200 0 0,1 256,56 Z" fill="#4dd0e1"/>
 
   <!-- Center circle (larger for thinner ring) -->
   <circle cx="256" cy="256" r="160" fill="#f7f4ef"/>

@@ -1,30 +1,30 @@
 export const CATEGORIES = [
-  // School - teal greens
-  { id: 'class', name: 'Class', color: '#2d7d6f' },       // deep teal
-  { id: 'studying', name: 'Studying', color: '#3d9182' }, // teal
-  { id: 'homework', name: 'Homework', color: '#4aa391' }, // light teal
-  { id: 'clubs', name: 'Clubs', color: '#5bb5a2' },       // bright teal
+  // School - light teals
+  { id: 'class', name: 'Class', color: '#4db6ac' },       // teal
+  { id: 'studying', name: 'Studying', color: '#26a69a' }, // medium teal
+  { id: 'homework', name: 'Homework', color: '#80cbc4' }, // light teal
+  { id: 'clubs', name: 'Clubs', color: '#b2dfdb' },       // pale teal
 
-  // Health & Fitness - forest greens
-  { id: 'gym', name: 'Gym', color: '#2e7d32' },           // forest green
-  { id: 'sleep', name: 'Sleep', color: '#1b4d3e' },       // dark forest
-  { id: 'meals', name: 'Meals', color: '#66a96c' },       // sage green
+  // Health & Fitness - greens and blues
+  { id: 'gym', name: 'Gym', color: '#66bb6a' },           // green
+  { id: 'sleep', name: 'Sleep', color: '#5c6bc0' },       // indigo blue
+  { id: 'meals', name: 'Meals', color: '#81c784' },       // light green
 
-  // Social - warm accents
-  { id: 'girlfriend', name: 'Girlfriend', color: '#b5838d' }, // dusty rose
-  { id: 'friends', name: 'Friends', color: '#c9a66b' },       // warm sand
-  { id: 'adventures', name: 'Adventures', color: '#7cb08a' }, // fresh green
+  // Social - blues and teals
+  { id: 'girlfriend', name: 'Girlfriend', color: '#7986cb' }, // soft indigo
+  { id: 'friends', name: 'Friends', color: '#64b5f6' },       // light blue
+  { id: 'adventures', name: 'Adventures', color: '#4fc3f7' }, // sky blue
 
-  // Personal - varied greens
-  { id: 'gaming', name: 'Gaming', color: '#558b6e' },     // muted green
-  { id: 'projects', name: 'Projects', color: '#3e8e75' }, // medium teal
-  { id: 'youtube', name: 'YouTube', color: '#8fbc8f' },   // light sage
-  { id: 'relax', name: 'Relax', color: '#a8d5a2' },       // pale mint
+  // Personal - light greens and blues
+  { id: 'gaming', name: 'Gaming', color: '#9575cd' },     // light purple
+  { id: 'projects', name: 'Projects', color: '#4dd0e1' }, // cyan
+  { id: 'youtube', name: 'YouTube', color: '#4db6ac' },   // teal
+  { id: 'relax', name: 'Relax', color: '#a5d6a7' },       // pale green
 
   // Other
-  { id: 'work', name: 'Work', color: '#4a7c6f' },         // slate green
-  { id: 'errands', name: 'Errands', color: '#6b9b7a' },   // dusty green
-  { id: 'other', name: 'Other', color: '#8a9a8c' },       // gray green
+  { id: 'work', name: 'Work', color: '#42a5f5' },         // blue
+  { id: 'errands', name: 'Errands', color: '#aed581' },   // lime
+  { id: 'other', name: 'Other', color: '#90a4ae' },       // blue gray
 ];
 
 export const getCategoryById = (id) => {
