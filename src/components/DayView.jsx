@@ -40,7 +40,7 @@ function DayView({ dayData, onBlockClick, isToday, categoryFrequencies, notifica
 
   return (
     <div
-      className="day-view"
+      className={`day-view ${notificationSelectionMode ? 'selection-active' : ''}`}
       ref={containerRef}
     >
       {isToday && (

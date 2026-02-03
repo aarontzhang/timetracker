@@ -100,32 +100,20 @@ function Navigation({ date, onPrev, onNext, onToday, view, onViewChange, notific
         </div>
       </div>
 
-      {notifications.selectionMode ? (
-        <div className="quiet-hours-bar">
-          <span className="quiet-hours-label">Tap hours to exclude</span>
-          <button
-            className="done-btn"
-            onClick={() => notifications.toggleSelectionMode()}
-          >
-            Done
-          </button>
-        </div>
-      ) : (
-        <div className="view-toggle">
-          <button
-            className={`toggle-btn ${view === 'day' ? 'active' : ''}`}
-            onClick={() => onViewChange('day')}
-          >
-            Day
-          </button>
-          <button
-            className={`toggle-btn ${view === 'stats' ? 'active' : ''}`}
-            onClick={() => onViewChange('stats')}
-          >
-            Stats
-          </button>
-        </div>
-      )}
+      <div className="view-toggle">
+        <button
+          className={`toggle-btn ${view === 'day' ? 'active' : ''}`}
+          onClick={() => onViewChange('day')}
+        >
+          Day
+        </button>
+        <button
+          className={`toggle-btn ${view === 'stats' ? 'active' : ''}`}
+          onClick={() => onViewChange('stats')}
+        >
+          Stats
+        </button>
+      </div>
     </header>
   );
 }

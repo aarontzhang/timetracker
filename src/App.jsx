@@ -115,6 +115,18 @@ function App() {
           onClose={() => setSelectedHour(null)}
         />
       )}
+
+      {notifications.selectionMode && (
+        <div className="floating-done-bar">
+          <span className="floating-done-label">Tap hours to exclude from reminders</span>
+          <button
+            className="floating-done-btn"
+            onClick={() => notifications.toggleSelectionMode()}
+          >
+            Done
+          </button>
+        </div>
+      )}
     </div>
   );
 }

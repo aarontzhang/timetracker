@@ -804,3 +804,49 @@ body {
 .time-block.selection-mode:active {
   background: rgba(45, 45, 45, 0.1);
 }
+
+/* Floating Done Bar */
+.floating-done-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #555;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  max-width: 430px;
+  margin: 0 auto;
+  z-index: 50;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.floating-done-label {
+  font-size: 13px;
+  color: #fff;
+  flex: 1;
+}
+
+.floating-done-btn {
+  background: #fff;
+  color: #555;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Space Mono', monospace;
+  flex-shrink: 0;
+}
+
+.floating-done-btn:active {
+  background: #e8e4de;
+}
+
+/* Extra padding when floating bar is visible */
+.day-view.selection-active {
+  padding-bottom: 80px;
+}
