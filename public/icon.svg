@@ -2,22 +2,22 @@
   <!-- Background circle -->
   <circle cx="256" cy="256" r="240" fill="#f7f4ef"/>
 
-  <!-- Pie segments - lighter greens and blues -->
-  <!-- Sleep: 30% - indigo -->
-  <path d="M256,256 L256,56 A200,200 0 0,1 451,330 Z" fill="#5c6bc0"/>
+  <!-- Pie segments - light greens and blues -->
+  <!-- Sleep: 30% - darker blue -->
+  <path d="M256,256 L256,56 A200,200 0 0,1 451,330 Z" fill="#1976d2"/>
 
-  <!-- Study: 25% - teal -->
-  <path d="M256,256 L451,330 A200,200 0 0,1 156,430 Z" fill="#4db6ac"/>
+  <!-- Study: 25% - pale green -->
+  <path d="M256,256 L451,330 A200,200 0 0,1 156,430 Z" fill="#a5d6a7"/>
 
   <!-- Social: 20% - light blue -->
   <path d="M256,256 L156,430 A200,200 0 0,1 61,182 Z" fill="#64b5f6"/>
 
-  <!-- Work: 15% - green -->
-  <path d="M256,256 L61,182 A200,200 0 0,1 156,82 Z" fill="#66bb6a"/>
+  <!-- Work: 15% - soft green -->
+  <path d="M256,256 L61,182 A200,200 0 0,1 156,82 Z" fill="#81c784"/>
 
-  <!-- Other: 10% - cyan -->
-  <path d="M256,256 L156,82 A200,200 0 0,1 256,56 Z" fill="#4dd0e1"/>
+  <!-- Other: 10% - blue -->
+  <path d="M256,256 L156,82 A200,200 0 0,1 256,56 Z" fill="#42a5f5"/>
 
-  <!-- Center circle (larger for thinner ring) -->
+  <!-- Center circle -->
   <circle cx="256" cy="256" r="160" fill="#f7f4ef"/>
 </svg>
