@@ -29,6 +29,33 @@ function App() {
     return frequencies;
   }, [data]);
 
+  // Get recently used categories (most recent first)
+  const recentCategories = useMemo(() => {
+    const recent = [];
+    // Sort dates in reverse chronological order
+    const sortedDates = Object.keys(data).sort().reverse();
+
+    for (const date of sortedDates) {
+      const dayData = data[date];
+      // Sort hours in reverse order (most recent hour first)
+      const sortedHours = Object.keys(dayData).sort((a, b) => Number(b) - Number(a));
+
+      for (const hour of sortedHours) {
+        const activity = dayData[hour];
+        if (!activity) continue;
+        const cats = activity.categories || (activity.category ? [activity.category] : []);
+        cats.forEach(catId => {
+          if (!recent.includes(catId)) {
+            recent.push(catId);
+          }
+        });
+      }
+      // Stop after we have enough
+      if (recent.length >= 20) break;
+    }
+    return recent;
+  }, [data]);
+
   const dateStr = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}`;
   const dayData = getDay(dateStr);
 
@@ -67,7 +94,7 @@ function App() {
     hours.forEach(hour => {
       setActivity(dateStr, hour, activity);
     });
-    setSelectedHour(null);
+    // Don't close modal - auto-save keeps it open
   };
 
   const handleClear = () => {
@@ -75,7 +102,7 @@ function App() {
     hours.forEach(hour => {
       clearActivity(dateStr, hour);
     });
-    setSelectedHour(null);
+    // Don't close modal - auto-save keeps it open
   };
 
   return (
@@ -96,6 +123,7 @@ function App() {
             dayData={dayData}
             onBlockClick={handleBlockClick}
             isToday={isToday()}
+            currentDate={currentDate}
             categoryFrequencies={categoryFrequencies}
             notificationSelectionMode={notifications.selectionMode}
             excludedHours={notifications.excludedHours}
@@ -109,16 +137,17 @@ function App() {
       {selectedHour !== null && (
         <ActivityModal
           hour={selectedHour}
-          activity={dayData[selectedHour]}
+          activity={dayData[Array.isArray(selectedHour) ? selectedHour[0] : selectedHour]}
           onSave={handleSave}
           onClear={handleClear}
           onClose={() => setSelectedHour(null)}
+          recentCategories={recentCategories}
         />
       )}
 
       {notifications.selectionMode && (
         <div className="floating-done-bar">
-          <span className="floating-done-label">Tap hours to exclude from reminders</span>
+          <span className="floating-done-label">Tap to exclude hours</span>
           <button
             className="floating-done-btn"
             onClick={() => notifications.toggleSelectionMode()}

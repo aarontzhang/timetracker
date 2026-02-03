@@ -1,13 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import TimeBlock from './TimeBlock';
 
-function DayView({ dayData, onBlockClick, isToday, categoryFrequencies, notificationSelectionMode, excludedHours = [], onToggleHourExclusion }) {
-  // All 24 hours of the day
+function DayView({ dayData, onBlockClick, isToday, currentDate, categoryFrequencies, notificationSelectionMode, excludedHours = [], onToggleHourExclusion }) {
   const hours = Array.from({ length: 24 }, (_, i) => i);
   const containerRef = useRef(null);
   const [currentTime, setCurrentTime] = useState(() => new Date());
 
-  // Block height: 54px with no margin
   const blockHeight = 54;
 
   // Update current time every minute
@@ -22,17 +20,32 @@ function DayView({ dayData, onBlockClick, isToday, categoryFrequencies, notifica
   useEffect(() => {
     if (isToday && containerRef.current) {
       const hour = new Date().getHours();
-      // Scroll to 2 hours before current time, centered in view
       const scrollPosition = Math.max(0, (hour - 2) * blockHeight);
       containerRef.current.scrollTop = scrollPosition;
     }
   }, [isToday]);
 
-  // Calculate position for current time indicator
+  // Determine if viewing a past day
+  const isPastDay = useCallback(() => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const viewDate = new Date(currentDate);
+    viewDate.setHours(0, 0, 0, 0);
+    return viewDate < today;
+  }, [currentDate]);
+
+  // Check if an hour is in the past (can be edited)
+  const isHourPast = useCallback((hour) => {
+    if (isPastDay()) return true;
+    if (isToday) {
+      return hour <= currentTime.getHours();
+    }
+    return false;
+  }, [isPastDay, isToday, currentTime]);
+
   const getCurrentTimePosition = () => {
     const hour = currentTime.getHours();
     const minutes = currentTime.getMinutes();
-
     return (hour * blockHeight) + (minutes / 60 * blockHeight);
   };
 
@@ -62,6 +75,7 @@ function DayView({ dayData, onBlockClick, isToday, categoryFrequencies, notifica
           categoryFrequencies={categoryFrequencies}
           isExcluded={excludedHours.includes(hour)}
           notificationSelectionMode={notificationSelectionMode}
+          isPast={isHourPast(hour)}
         />
       ))}
     </div>

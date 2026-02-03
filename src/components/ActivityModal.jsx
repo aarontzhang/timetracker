@@ -1,13 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { CATEGORIES } from '../utils/categories';
 
-function ActivityModal({ hour, activity, onSave, onClear, onClose }) {
+function ActivityModal({ hour, activity, onSave, onClear, onClose, recentCategories = [] }) {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [otherText, setOtherText] = useState('');
+  const modalRef = useRef(null);
+  const startYRef = useRef(null);
+  const currentYRef = useRef(null);
 
+  // Initialize from existing activity
   useEffect(() => {
     if (activity) {
-      // Handle both old format (single category) and new format (array)
       if (activity.categories) {
         setSelectedCategories(activity.categories);
       } else if (activity.category) {
@@ -21,6 +24,22 @@ function ActivityModal({ hour, activity, onSave, onClear, onClose }) {
       setOtherText('');
     }
   }, [activity]);
+
+  // Sort categories by recency (most recent first)
+  const sortedCategories = useMemo(() => {
+    const categoryOrder = new Map();
+    recentCategories.forEach((catId, index) => {
+      if (!categoryOrder.has(catId)) {
+        categoryOrder.set(catId, index);
+      }
+    });
+
+    return [...CATEGORIES].sort((a, b) => {
+      const aOrder = categoryOrder.has(a.id) ? categoryOrder.get(a.id) : 999;
+      const bOrder = categoryOrder.has(b.id) ? categoryOrder.get(b.id) : 999;
+      return aOrder - bOrder;
+    });
+  }, [recentCategories]);
 
   const formatHour = (h) => {
     if (h === 0) return '12am';
@@ -38,43 +57,93 @@ function ActivityModal({ hour, activity, onSave, onClear, onClose }) {
     return formatHour(hour);
   };
 
-  const toggleCategory = (catId) => {
-    setSelectedCategories(prev => {
-      if (prev.includes(catId)) {
-        return prev.filter(id => id !== catId);
-      } else {
-        return [...prev, catId];
-      }
-    });
-  };
-
-  const handleSave = () => {
-    if (selectedCategories.length > 0) {
-      const data = { categories: selectedCategories };
-      if (selectedCategories.includes('other') && otherText.trim()) {
-        data.otherText = otherText.trim();
+  // Auto-save when categories change
+  const saveActivity = (categories, text) => {
+    if (categories.length > 0) {
+      const data = { categories };
+      if (categories.includes('other') && text.trim()) {
+        data.otherText = text.trim();
       }
       onSave(data);
     } else {
-      // No categories selected = clear the activity
       onClear();
     }
+  };
+
+  const toggleCategory = (catId) => {
+    setSelectedCategories(prev => {
+      const newCategories = prev.includes(catId)
+        ? prev.filter(id => id !== catId)
+        : [...prev, catId];
+
+      // Auto-save immediately
+      setTimeout(() => saveActivity(newCategories, otherText), 0);
+
+      return newCategories;
+    });
+  };
+
+  // Handle other text changes with debounced save
+  const handleOtherTextChange = (e) => {
+    const text = e.target.value;
+    setOtherText(text);
+    // Save after a brief delay for text input
+    setTimeout(() => {
+      if (selectedCategories.includes('other')) {
+        saveActivity(selectedCategories, text);
+      }
+    }, 300);
+  };
+
+  // Swipe down to close
+  const handleTouchStart = (e) => {
+    startYRef.current = e.touches[0].clientY;
+    currentYRef.current = e.touches[0].clientY;
+  };
+
+  const handleTouchMove = (e) => {
+    currentYRef.current = e.touches[0].clientY;
+    const diff = currentYRef.current - startYRef.current;
+
+    if (diff > 0 && modalRef.current) {
+      modalRef.current.style.transform = `translateY(${diff}px)`;
+    }
+  };
+
+  const handleTouchEnd = () => {
+    const diff = currentYRef.current - startYRef.current;
+
+    if (diff > 100) {
+      // Swipe was long enough, close modal
+      onClose();
+    } else if (modalRef.current) {
+      // Reset position
+      modalRef.current.style.transform = 'translateY(0)';
+    }
+
+    startYRef.current = null;
+    currentYRef.current = null;
   };
 
   const hasOtherSelected = selectedCategories.includes('other');
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal" onClick={e => e.stopPropagation()}>
+      <div
+        ref={modalRef}
+        className="modal"
+        onClick={e => e.stopPropagation()}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        <div className="modal-handle" />
         <div className="modal-header">
           <h2>{formatHourRange()}</h2>
-          <button className="check-btn" onClick={handleSave}>
-            &#10003;
-          </button>
         </div>
 
         <div className="category-grid">
-          {CATEGORIES.map(cat => {
+          {sortedCategories.map(cat => {
             const isSelected = selectedCategories.includes(cat.id);
             return (
               <button
@@ -97,7 +166,7 @@ function ActivityModal({ hour, activity, onSave, onClear, onClose }) {
             className="note-input"
             placeholder="What activity?"
             value={otherText}
-            onChange={e => setOtherText(e.target.value)}
+            onChange={handleOtherTextChange}
           />
         )}
       </div>

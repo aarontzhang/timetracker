@@ -1,6 +1,15 @@
 import { getCategoryById } from '../utils/categories';
 
-function TimeBlock({ hour, activity, onEdit, onToggleQuiet, categoryFrequencies = {}, isExcluded = false, notificationSelectionMode = false }) {
+function TimeBlock({
+  hour,
+  activity,
+  onEdit,
+  onToggleQuiet,
+  categoryFrequencies = {},
+  isExcluded = false,
+  notificationSelectionMode = false,
+  isPast = false
+}) {
   const formatHour = (h) => {
     if (h === 0) return '12am';
     if (h === 12) return '12pm';
@@ -17,7 +26,6 @@ function TimeBlock({ hour, activity, onEdit, onToggleQuiet, categoryFrequencies 
     return [];
   };
 
-  // Convert hex to RGB
   const hexToRgb = (hex) => {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result ? {
@@ -27,14 +35,12 @@ function TimeBlock({ hour, activity, onEdit, onToggleQuiet, categoryFrequencies 
     } : { r: 200, g: 200, b: 200 };
   };
 
-  // Get weighted background color - weights towards less common categories
   const getBackgroundColor = (cats) => {
     if (cats.length === 0) return null;
     if (cats.length === 1) {
       return cats[0].color;
     }
 
-    // Calculate inverse frequency weights (rarer = higher weight)
     const maxFreq = Math.max(...cats.map(cat => categoryFrequencies[cat.id] || 1));
     const weights = cats.map(cat => {
       const freq = categoryFrequencies[cat.id] || 1;
@@ -58,6 +64,14 @@ function TimeBlock({ hour, activity, onEdit, onToggleQuiet, categoryFrequencies 
       onToggleQuiet(hour);
     }
   };
+
+  const handleEditClick = (e) => {
+    e.stopPropagation();
+    onEdit(hour);
+  };
+
+  // Show edit button only for past hours (not in notification selection mode)
+  const showEditButton = !notificationSelectionMode && isPast;
 
   return (
     <div
@@ -86,31 +100,25 @@ function TimeBlock({ hour, activity, onEdit, onToggleQuiet, categoryFrequencies 
       {notificationSelectionMode ? (
         <div className={`quiet-toggle ${isExcluded ? 'active' : ''}`}>
           {isExcluded ? (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
               <line x1="1" y1="1" x2="23" y2="23" />
             </svg>
           ) : (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
               <path d="M13.73 21a2 2 0 0 1-3.46 0" />
             </svg>
           )}
         </div>
-      ) : (
-        <button
-          className="edit-btn"
-          onClick={(e) => {
-            e.stopPropagation();
-            onEdit(hour);
-          }}
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      ) : showEditButton ? (
+        <button className="edit-btn" onClick={handleEditClick}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
             <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
           </svg>
         </button>
-      )}
+      ) : null}
     </div>
   );
 }
