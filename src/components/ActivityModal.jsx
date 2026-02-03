@@ -3,7 +3,7 @@ import { CATEGORIES } from '../utils/categories';
 
 function ActivityModal({ hour, activity, onSave, onClear, onClose }) {
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const [note, setNote] = useState('');
+  const [otherText, setOtherText] = useState('');
 
   useEffect(() => {
     if (activity) {
@@ -15,10 +15,10 @@ function ActivityModal({ hour, activity, onSave, onClear, onClose }) {
       } else {
         setSelectedCategories([]);
       }
-      setNote(activity.note || '');
+      setOtherText(activity.otherText || '');
     } else {
       setSelectedCategories([]);
-      setNote('');
+      setOtherText('');
     }
   }, [activity]);
 
@@ -50,50 +50,56 @@ function ActivityModal({ hour, activity, onSave, onClear, onClose }) {
 
   const handleSave = () => {
     if (selectedCategories.length > 0) {
-      onSave({ categories: selectedCategories, note: note.trim() });
+      const data = { categories: selectedCategories };
+      if (selectedCategories.includes('other') && otherText.trim()) {
+        data.otherText = otherText.trim();
+      }
+      onSave(data);
+    } else {
+      // No categories selected = clear the activity
+      onClear();
     }
   };
+
+  const hasOtherSelected = selectedCategories.includes('other');
 
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={e => e.stopPropagation()}>
         <div className="modal-header">
           <h2>{formatHourRange()}</h2>
-          <button className="close-btn" onClick={onClose}>&times;</button>
+          <button className="check-btn" onClick={handleSave}>
+            &#10003;
+          </button>
         </div>
 
         <div className="category-grid">
-          {CATEGORIES.map(cat => (
-            <button
-              key={cat.id}
-              className={`category-btn ${selectedCategories.includes(cat.id) ? 'selected' : ''}`}
-              onClick={() => toggleCategory(cat.id)}
-            >
-              {cat.name}
-            </button>
-          ))}
+          {CATEGORIES.map(cat => {
+            const isSelected = selectedCategories.includes(cat.id);
+            return (
+              <button
+                key={cat.id}
+                className={`category-btn ${isSelected ? 'selected' : ''}`}
+                onClick={() => toggleCategory(cat.id)}
+              >
+                {isSelected && (
+                  <span className="category-indicator" style={{ backgroundColor: cat.color }} />
+                )}
+                {cat.name}
+              </button>
+            );
+          })}
         </div>
 
-        <input
-          type="text"
-          className="note-input"
-          placeholder="Add a note"
-          value={note}
-          onChange={e => setNote(e.target.value)}
-        />
-
-        <div className="modal-actions">
-          {activity && (
-            <button className="clear-btn" onClick={onClear}>Clear</button>
-          )}
-          <button
-            className="save-btn"
-            onClick={handleSave}
-            disabled={selectedCategories.length === 0}
-          >
-            Save
-          </button>
-        </div>
+        {hasOtherSelected && (
+          <input
+            type="text"
+            className="note-input"
+            placeholder="What activity?"
+            value={otherText}
+            onChange={e => setOtherText(e.target.value)}
+          />
+        )}
       </div>
     </div>
   );

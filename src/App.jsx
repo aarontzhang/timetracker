@@ -4,6 +4,7 @@ import DayView from './components/DayView';
 import StatsView from './components/StatsView';
 import ActivityModal from './components/ActivityModal';
 import { useStorage } from './hooks/useStorage';
+import { useNotifications } from './hooks/useNotifications';
 import './App.css';
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
   const [view, setView] = useState('day');
   const [selectedHour, setSelectedHour] = useState(null);
   const { data, getDay, setActivity, clearActivity } = useStorage();
+  const notifications = useNotifications();
 
   // Calculate how often each category is used across all data
   const categoryFrequencies = useMemo(() => {
@@ -85,11 +87,21 @@ function App() {
         onToday={handleToday}
         view={view}
         onViewChange={setView}
+        notifications={notifications}
       />
 
       <main className="main-content">
         {view === 'day' ? (
-          <DayView dayData={dayData} onBlockClick={handleBlockClick} isToday={isToday()} categoryFrequencies={categoryFrequencies} />
+          <DayView
+            dayData={dayData}
+            onBlockClick={handleBlockClick}
+            isToday={isToday()}
+            categoryFrequencies={categoryFrequencies}
+            notificationSelectionMode={notifications.selectionMode}
+            excludedHours={notifications.excludedHours}
+            onToggleHourExclusion={notifications.toggleHourExclusion}
+            onFinishQuietHoursEdit={notifications.toggleSelectionMode}
+          />
         ) : (
           <StatsView data={data} currentDate={currentDate} />
         )}

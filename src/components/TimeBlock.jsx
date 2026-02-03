@@ -1,6 +1,6 @@
 import { getCategoryById } from '../utils/categories';
 
-function TimeBlock({ hour, activity, isSelected, onPointerDown, onPointerEnter, categoryFrequencies = {} }) {
+function TimeBlock({ hour, activity, isSelected, onPointerDown, onPointerEnter, categoryFrequencies = {}, isExcluded = false, notificationSelectionMode = false, isQuietPending = false, quietDragAction = null }) {
   const formatHour = (h) => {
     if (h === 0) return '12am';
     if (h === 12) return '12pm';
@@ -53,9 +53,11 @@ function TimeBlock({ hour, activity, isSelected, onPointerDown, onPointerEnter, 
   const categories = getCategories();
   const backgroundColor = getBackgroundColor(categories);
 
+  const pendingClass = isQuietPending ? (quietDragAction === 'add' ? 'quiet-pending-add' : 'quiet-pending-remove') : '';
+
   return (
     <div
-      className={`time-block ${isSelected ? 'selected' : ''} ${categories.length > 0 ? 'has-activity' : ''}`}
+      className={`time-block ${isSelected ? 'selected' : ''} ${categories.length > 0 ? 'has-activity' : ''} ${isExcluded ? 'excluded' : ''} ${notificationSelectionMode ? 'selection-mode' : ''} ${pendingClass}`}
       onPointerDown={onPointerDown}
       onPointerEnter={onPointerEnter}
     >
@@ -63,6 +65,14 @@ function TimeBlock({ hour, activity, isSelected, onPointerDown, onPointerEnter, 
         className="time-block-indicator"
         style={backgroundColor ? { backgroundColor } : {}}
       />
+      {isExcluded && (
+        <div className="excluded-indicator">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+            <line x1="1" y1="1" x2="23" y2="23" />
+          </svg>
+        </div>
+      )}
       <span className="time-label">{formatHour(hour)}</span>
       {categories.length > 0 && (
         <div className="activity-info">
@@ -72,11 +82,10 @@ function TimeBlock({ hour, activity, isSelected, onPointerDown, onPointerEnter, 
                 key={cat.id}
                 className="category-tag"
               >
-                {cat.name}
+                {cat.id === 'other' && activity.otherText ? activity.otherText : cat.name}
               </span>
             ))}
           </div>
-          {activity.note && <span className="activity-note">{activity.note}</span>}
         </div>
       )}
     </div>
