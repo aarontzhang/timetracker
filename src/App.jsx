@@ -100,7 +100,6 @@ function App() {
             notificationSelectionMode={notifications.selectionMode}
             excludedHours={notifications.excludedHours}
             onToggleHourExclusion={notifications.toggleHourExclusion}
-            onFinishQuietHoursEdit={notifications.toggleSelectionMode}
           />
         ) : (
           <StatsView data={data} currentDate={currentDate} />
