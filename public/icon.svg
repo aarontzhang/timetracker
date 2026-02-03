@@ -1,0 +1,26 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="240" fill="#f5f3ef"/>
+
+  <!-- Pie segments (donut chart style) -->
+  <!-- Sleep: 30% - dark green -->
+  <path d="M256,256 L256,40 A216,216 0 0,1 469.5,336.5 Z" fill="#1b5e20"/>
+
+  <!-- Study: 25% - forest green -->
+  <path d="M256,256 L469.5,336.5 A216,216 0 0,1 148.5,447 Z" fill="#2e7d32"/>
+
+  <!-- Work: 20% - medium green -->
+  <path d="M256,256 L148.5,447 A216,216 0 0,1 42.5,175.5 Z" fill="#43a047"/>
+
+  <!-- Personal: 15% - leaf green -->
+  <path d="M256,256 L42.5,175.5 A216,216 0 0,1 148.5,65 Z" fill="#66bb6a"/>
+
+  <!-- Other: 10% - light green -->
+  <path d="M256,256 L148.5,65 A216,216 0 0,1 256,40 Z" fill="#a5d6a7"/>
+
+  <!-- Center circle (donut hole) -->
+  <circle cx="256" cy="256" r="120" fill="#faf8f5"/>
+
+  <!-- Center text/icon hint -->
+  <circle cx="256" cy="256" r="8" fill="#2e7d32"/>
+</svg>
