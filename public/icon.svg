@@ -1,22 +1,22 @@
 <svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
   <!-- Background circle -->
-  <circle cx="256" cy="256" r="240" fill="#f5f3ef"/>
+  <circle cx="256" cy="256" r="240" fill="#faf8f5"/>
 
-  <!-- Pie segments with highlighter-style opacity -->
-  <!-- Blue: 30% -->
-  <path d="M256,256 L256,40 A216,216 0 0,1 469.5,336.5 Z" fill="#2196f3" fill-opacity="0.5"/>
+  <!-- Pie segments -->
+  <!-- Sleep: 30% - dark forest -->
+  <path d="M256,256 L256,40 A216,216 0 0,1 469.5,336.5 Z" fill="#1b4d3e"/>
 
-  <!-- Green: 25% -->
-  <path d="M256,256 L469.5,336.5 A216,216 0 0,1 148.5,447 Z" fill="#4caf50" fill-opacity="0.5"/>
+  <!-- Study: 25% - teal -->
+  <path d="M256,256 L469.5,336.5 A216,216 0 0,1 148.5,447 Z" fill="#3d9182"/>
 
-  <!-- Red: 20% -->
-  <path d="M256,256 L148.5,447 A216,216 0 0,1 42.5,175.5 Z" fill="#f44336" fill-opacity="0.5"/>
+  <!-- Social: 20% - dusty rose -->
+  <path d="M256,256 L148.5,447 A216,216 0 0,1 42.5,175.5 Z" fill="#b5838d"/>
 
-  <!-- Purple: 15% -->
-  <path d="M256,256 L42.5,175.5 A216,216 0 0,1 148.5,65 Z" fill="#9c27b0" fill-opacity="0.5"/>
+  <!-- Work: 15% - forest green -->
+  <path d="M256,256 L42.5,175.5 A216,216 0 0,1 148.5,65 Z" fill="#2e7d32"/>
 
-  <!-- Yellow: 10% -->
-  <path d="M256,256 L148.5,65 A216,216 0 0,1 256,40 Z" fill="#ffeb3b" fill-opacity="0.5"/>
+  <!-- Other: 10% - warm sand -->
+  <path d="M256,256 L148.5,65 A216,216 0 0,1 256,40 Z" fill="#c9a66b"/>
 
   <!-- Center circle (donut hole) -->
   <circle cx="256" cy="256" r="120" fill="#faf8f5"/>
