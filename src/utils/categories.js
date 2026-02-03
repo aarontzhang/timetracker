@@ -1,30 +1,30 @@
 export const CATEGORIES = [
-  // School - blues
-  { id: 'class', name: 'Class', color: '#4a90c2' },       // sky blue
-  { id: 'studying', name: 'Studying', color: '#5ba0d0' }, // bright blue
-  { id: 'homework', name: 'Homework', color: '#3d7ab8' }, // medium blue
-  { id: 'clubs', name: 'Clubs', color: '#6eb5e0' },       // light blue
+  // School - blue
+  { id: 'class', name: 'Class', color: '#2196f3' },       // blue
+  { id: 'studying', name: 'Studying', color: '#2196f3' }, // blue
+  { id: 'homework', name: 'Homework', color: '#2196f3' }, // blue
+  { id: 'clubs', name: 'Clubs', color: '#2196f3' },       // blue
 
-  // Health & Fitness - greens
+  // Health & Fitness - green
   { id: 'gym', name: 'Gym', color: '#4caf50' },           // green
-  { id: 'sleep', name: 'Sleep', color: '#5c6bc0' },       // indigo
-  { id: 'meals', name: 'Meals', color: '#66bb6a' },       // light green
+  { id: 'sleep', name: 'Sleep', color: '#9c27b0' },       // purple
+  { id: 'meals', name: 'Meals', color: '#ff9800' },       // orange
 
-  // Social - warm reds and oranges
-  { id: 'girlfriend', name: 'Girlfriend', color: '#e57373' }, // soft red
-  { id: 'friends', name: 'Friends', color: '#ffb74d' },       // orange
-  { id: 'adventures', name: 'Adventures', color: '#ff8a65' }, // coral
+  // Social - red
+  { id: 'girlfriend', name: 'Girlfriend', color: '#f44336' }, // red
+  { id: 'friends', name: 'Friends', color: '#ff9800' },       // orange
+  { id: 'adventures', name: 'Adventures', color: '#ffeb3b' }, // yellow
 
-  // Personal - purples and yellows
-  { id: 'gaming', name: 'Gaming', color: '#9575cd' },     // purple
-  { id: 'projects', name: 'Projects', color: '#4db6ac' }, // teal
-  { id: 'youtube', name: 'YouTube', color: '#ef5350' },   // red
-  { id: 'relax', name: 'Relax', color: '#81c784' },       // soft green
+  // Personal - purple/yellow
+  { id: 'gaming', name: 'Gaming', color: '#9c27b0' },     // purple
+  { id: 'projects', name: 'Projects', color: '#4caf50' }, // green
+  { id: 'youtube', name: 'YouTube', color: '#f44336' },   // red
+  { id: 'relax', name: 'Relax', color: '#4caf50' },       // green
 
-  // Other - varied
-  { id: 'work', name: 'Work', color: '#78909c' },         // blue gray
-  { id: 'errands', name: 'Errands', color: '#ffd54f' },   // yellow
-  { id: 'other', name: 'Other', color: '#90a4ae' },       // light blue gray
+  // Other
+  { id: 'work', name: 'Work', color: '#2196f3' },         // blue
+  { id: 'errands', name: 'Errands', color: '#ffeb3b' },   // yellow
+  { id: 'other', name: 'Other', color: '#9e9e9e' },       // gray
 ];
 
 export const getCategoryById = (id) => {

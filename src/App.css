@@ -192,17 +192,23 @@ body {
 }
 
 .time-block.has-activity {
-  /* Background color set via inline style - uses category colors */
+  /* Background color set via inline style - highlighter effect with opacity */
 }
 
-.time-block.has-activity .time-label,
-.time-block.has-activity .category-tag,
+.time-block.has-activity .time-label {
+  color: #555;
+}
+
+.time-block.has-activity .category-tag {
+  color: #2d2d2d;
+}
+
 .time-block.has-activity .activity-note {
-  color: #fff;
+  color: #444;
 }
 
 .time-block.has-activity .category-tag:not(:last-child)::after {
-  color: rgba(255, 255, 255, 0.6);
+  color: #888;
 }
 
 .time-label {

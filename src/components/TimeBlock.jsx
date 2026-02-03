@@ -27,28 +27,33 @@ function TimeBlock({ hour, activity, isSelected, onPointerDown, onPointerEnter, 
     } : { r: 200, g: 200, b: 200 };
   };
 
-  // Get weighted background color - weights towards less common categories
+  // Get highlighter-style background color with opacity
   const getBackgroundColor = (cats) => {
     if (cats.length === 0) return null;
+
+    let r, g, b;
     if (cats.length === 1) {
-      return cats[0].color;
+      const rgb = hexToRgb(cats[0].color);
+      r = rgb.r;
+      g = rgb.g;
+      b = rgb.b;
+    } else {
+      // Calculate inverse frequency weights (rarer = higher weight)
+      const maxFreq = Math.max(...cats.map(cat => categoryFrequencies[cat.id] || 1));
+      const weights = cats.map(cat => {
+        const freq = categoryFrequencies[cat.id] || 1;
+        return maxFreq / freq;
+      });
+      const totalWeight = weights.reduce((sum, w) => sum + w, 0);
+
+      const rgbValues = cats.map(cat => hexToRgb(cat.color));
+      r = Math.round(rgbValues.reduce((sum, c, i) => sum + c.r * weights[i], 0) / totalWeight);
+      g = Math.round(rgbValues.reduce((sum, c, i) => sum + c.g * weights[i], 0) / totalWeight);
+      b = Math.round(rgbValues.reduce((sum, c, i) => sum + c.b * weights[i], 0) / totalWeight);
     }
 
-    // Calculate inverse frequency weights (rarer = higher weight)
-    const maxFreq = Math.max(...cats.map(cat => categoryFrequencies[cat.id] || 1));
-    const weights = cats.map(cat => {
-      const freq = categoryFrequencies[cat.id] || 1;
-      // Inverse frequency: rarer categories get higher weight
-      return maxFreq / freq;
-    });
-    const totalWeight = weights.reduce((sum, w) => sum + w, 0);
-
-    const rgbValues = cats.map(cat => hexToRgb(cat.color));
-    const avgR = Math.round(rgbValues.reduce((sum, c, i) => sum + c.r * weights[i], 0) / totalWeight);
-    const avgG = Math.round(rgbValues.reduce((sum, c, i) => sum + c.g * weights[i], 0) / totalWeight);
-    const avgB = Math.round(rgbValues.reduce((sum, c, i) => sum + c.b * weights[i], 0) / totalWeight);
-
-    return `rgb(${avgR}, ${avgG}, ${avgB})`;
+    // Return with highlighter opacity
+    return `rgba(${r}, ${g}, ${b}, 0.35)`;
   };
 
   const categories = getCategories();
