@@ -1,0 +1,84 @@
+import { getCategoryById } from '../utils/categories';
+
+function TimeBlock({ hour, activity, isSelected, onPointerDown, onPointerEnter, categoryFrequencies = {} }) {
+  const formatHour = (h) => {
+    if (h === 0) return '12am';
+    if (h === 12) return '12pm';
+    return h < 12 ? `${h}am` : `${h - 12}pm`;
+  };
+
+  const getCategories = () => {
+    if (!activity) return [];
+    if (activity.categories) {
+      return activity.categories.map(id => getCategoryById(id));
+    } else if (activity.category) {
+      return [getCategoryById(activity.category)];
+    }
+    return [];
+  };
+
+  // Convert hex to RGB
+  const hexToRgb = (hex) => {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : { r: 200, g: 200, b: 200 };
+  };
+
+  // Get weighted background color - weights towards less common categories
+  const getBackgroundColor = (cats) => {
+    if (cats.length === 0) return null;
+    if (cats.length === 1) {
+      return cats[0].color;
+    }
+
+    // Calculate inverse frequency weights (rarer = higher weight)
+    const maxFreq = Math.max(...cats.map(cat => categoryFrequencies[cat.id] || 1));
+    const weights = cats.map(cat => {
+      const freq = categoryFrequencies[cat.id] || 1;
+      // Inverse frequency: rarer categories get higher weight
+      return maxFreq / freq;
+    });
+    const totalWeight = weights.reduce((sum, w) => sum + w, 0);
+
+    const rgbValues = cats.map(cat => hexToRgb(cat.color));
+    const avgR = Math.round(rgbValues.reduce((sum, c, i) => sum + c.r * weights[i], 0) / totalWeight);
+    const avgG = Math.round(rgbValues.reduce((sum, c, i) => sum + c.g * weights[i], 0) / totalWeight);
+    const avgB = Math.round(rgbValues.reduce((sum, c, i) => sum + c.b * weights[i], 0) / totalWeight);
+
+    return `rgb(${avgR}, ${avgG}, ${avgB})`;
+  };
+
+  const categories = getCategories();
+  const backgroundColor = getBackgroundColor(categories);
+
+  return (
+    <div
+      className={`time-block ${isSelected ? 'selected' : ''} ${categories.length > 0 ? 'has-activity' : ''}`}
+      onPointerDown={onPointerDown}
+      onPointerEnter={onPointerEnter}
+      style={backgroundColor ? { backgroundColor } : {}}
+    >
+      <span className="time-label">{formatHour(hour)}</span>
+      {categories.length > 0 && (
+        <div className="activity-info">
+          <div className="category-tags">
+            {categories.map(cat => (
+              <span
+                key={cat.id}
+                className="category-tag"
+              >
+                {cat.name}
+              </span>
+            ))}
+          </div>
+          {activity.note && <span className="activity-note">{activity.note}</span>}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default TimeBlock;
